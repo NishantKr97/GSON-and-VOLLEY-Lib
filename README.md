@@ -1,3 +1,4 @@
-# GSON-and-VOLLEY-Lib
-This project implements GSON and Volley Library, which is further used in the main app of Savemonk. 
-Savemonk is Coupon providing Company.
+# UTILITY APPS
+This repository contains the projects which can be implemented in other major Android Projects.<br>
+<br>
+Just plug and play :)
