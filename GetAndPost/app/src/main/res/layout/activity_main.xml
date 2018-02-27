@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.getandpost.MainActivity">
+    tools:context="com.example.android.getandpost.MainActivity"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/button"
@@ -13,5 +14,10 @@
         android:text="get data"
         android:onClick="getData"
         tools:ignore="OnClick" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="500dp" />
 
 </LinearLayout>

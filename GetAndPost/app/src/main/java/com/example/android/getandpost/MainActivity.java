@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,11 +22,13 @@ public class MainActivity extends AppCompatActivity {
 
     String domain = "http://127.0.0.1:8000/data/";
     String domain1 = "http://10.50.21.189";
-    String domain2 = "http://10.50.21.189:8000/data/";
+    String domain2 = "http://10.50.21.64:8000/user/test";
 
     RequestQueue queue;
     Gson gson;
     Button button;
+
+    TextView textView;
 
 
     @Override
@@ -53,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(String responseFinal) {
                             Log.i("tag", responseFinal);
-                            Toast.makeText(MainActivity.this, responseFinal, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(MainActivity.this, responseFinal, Toast.LENGTH_SHORT).show();
+                            textView = (TextView) findViewById(R.id.text);
+                            textView.setText(responseFinal);
 
                         }
                     }, new Response.ErrorListener() {
