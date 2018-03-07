@@ -1,0 +1,64 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\github\\DisplayingBitmaps\\Application\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v11\\values-v11.xml",
+            "map": [
+                {
+                    "source": "C:\\github\\DisplayingBitmaps\\Application\\src\\main\\res\\values-v11\\styles.xml",
+                    "from": {
+                        "startLines": "19,25,27",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "663,965,1011",
+                        "endLines": "23,25,29",
+                        "endColumns": "12,44,12",
+                        "endOffsets": "959,1005,1166"
+                    },
+                    "to": {
+                        "startLines": "2,7,177",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,356,13060",
+                        "endLines": "6,7,179",
+                        "endColumns": "12,43,12",
+                        "endOffsets": "351,395,13215"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\NISHANT\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-25.0.1.aar\\97e42dad1cf4db618f7e46bc896e56ce\\res\\values-v11\\values-v11.xml",
+                    "from": {
+                        "startLines": "2,8,14,20,26,32,38,39,40,41,46,51,56,58,60,61,62,115,169",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,474,899,1327,1753,2180,2605,2694,2795,2898,3306,3726,4148,4255,4384,4455,4538,8477,12559",
+                        "endLines": "7,13,19,25,31,37,38,39,40,45,50,55,57,59,60,61,114,168,169",
+                        "endColumns": "12,12,12,12,12,12,88,100,102,12,12,12,12,12,70,82,12,12,90",
+                        "endOffsets": "469,894,1322,1748,2175,2600,2689,2790,2893,3301,3721,4143,4250,4379,4450,4533,8472,12554,12645"
+                    },
+                    "to": {
+                        "startLines": "8,14,20,26,32,38,44,45,46,47,52,57,62,64,66,67,68,121,175",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "400,819,1244,1672,2098,2525,2950,3039,3140,3243,3651,4071,4493,4600,4729,4800,4883,8822,12904",
+                        "endLines": "13,19,25,31,37,43,44,45,46,51,56,61,63,65,66,67,120,174,175",
+                        "endColumns": "12,12,12,12,12,12,88,100,102,12,12,12,12,12,70,82,12,12,90",
+                        "endOffsets": "814,1239,1667,2093,2520,2945,3034,3135,3238,3646,4066,4488,4595,4724,4795,4878,8817,12899,12990"
+                    }
+                },
+                {
+                    "source": "C:\\github\\DisplayingBitmaps\\Application\\src\\main\\res\\values-v11\\template-styles.xml",
+                    "from": {
+                        "startLines": "19",
+                        "startColumns": "4",
+                        "startOffsets": "650",
+                        "endColumns": "65",
+                        "endOffsets": "711"
+                    },
+                    "to": {
+                        "startLines": "176",
+                        "startColumns": "4",
+                        "startOffsets": "12995",
+                        "endColumns": "64",
+                        "endOffsets": "13055"
+                    }
+                }
+            ]
+        }
+    ]
+}
