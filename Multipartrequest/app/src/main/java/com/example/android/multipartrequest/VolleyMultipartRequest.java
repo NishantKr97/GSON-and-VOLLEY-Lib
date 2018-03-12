@@ -1,5 +1,7 @@
 package com.example.android.multipartrequest;
 
+import android.widget.VideoView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -107,7 +109,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
      * @return Map data part label with data byte
      * @throws AuthFailureError
      */
-    protected Map<String, DataPart> getByteData() throws AuthFailureError {
+    protected Map<String, DataPart> getByteData() throws AuthFailureError, IOException {
         return null;
     }
 
@@ -225,8 +227,9 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
 
         /**
          * Default data part
+         * @param videoView
          */
-        public DataPart() {
+        public DataPart(VideoView videoView) {
         }
 
         /**

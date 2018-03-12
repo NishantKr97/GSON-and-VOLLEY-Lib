@@ -2,7 +2,6 @@ package com.example.android.multipartrequest;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
@@ -29,13 +29,21 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.widget.MediaController;
+import android.widget.VideoView;
+
 public class MainActivity extends AppCompatActivity {
 
     Button upload;
     ImageView imageView;
     TextView textView;
-    String url = "http://10.50.22.56:8000/stocks/";
+    String url = "http://10.50.20.167:8000/video/";
     EditText urlText;
+    VideoView videoView;
+    private MediaController mc;
+    String path;
+    Uri uri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +59,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        videoView = findViewById(R.id.video);
+        textView = (TextView) findViewById(R.id.textView);
+
+
     }
 
     private void imageBrowse() {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_CALENDAR)
+//                == PackageManager.PERMISSION_GRANTED) {
+        // Permission is not granted
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, 100);
+//        }
+
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -64,14 +82,20 @@ public class MainActivity extends AppCompatActivity {
             Uri selectedImageUri = data.getData();
             if (null != selectedImageUri) {
                 // Get the path from the Uri
-                String path = getPathFromURI(selectedImageUri);
+                path = getPathFromURI(selectedImageUri);
                 Log.i("Image Path : ", "Image Path : " + path);
                 // Set the image in ImageView
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                    imageView = (ImageView) findViewById(R.id.imageView);
-                    imageView.setImageBitmap(bitmap);
-                } catch (IOException e) {
+                    uri = Uri.parse(path);
+                    mc = new MediaController(this);
+                    videoView.setMediaController(mc);
+                    videoView.requestFocus();
+                    videoView.setVideoURI(uri);
+                    videoView.start();
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+//                    imageView = (ImageView) findViewById(R.id.imageView);
+//                    imageView.setImageBitmap(bitmap);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 //                imageView.setImageURI(selectedImageUri);
@@ -82,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String getPathFromURI(Uri contentUri) {
         String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
+        String[] proj = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
         if (cursor.moveToFirst()) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -93,26 +117,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void uploadBitmap() {
-        //url = urlText.getText().toString();
-        Toast.makeText(MainActivity.this, "in uploadBitmap 1", Toast.LENGTH_SHORT).show();
+//url = urlText.getText().toString();
+        Toast.makeText(MainActivity.this, "in uploadBitmap", Toast.LENGTH_SHORT).show();
         VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 String resultResponse = new String(response.data);
-                textView = (TextView) findViewById(R.id.textView);
                 textView.setText(resultResponse);
-               // Toast.makeText(AfterLogin.this, resultResponse, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, resultResponse, Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 NetworkResponse networkResponse = error.networkResponse;
                 String errorMessage = "Unknown error";
+                textView.setText(error.toString());
                 if (networkResponse == null) {
                     if (error.getClass().equals(TimeoutError.class)) {
                         errorMessage = "Request timeout";
+                        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+
                     } else if (error.getClass().equals(NoConnectionError.class)) {
                         errorMessage = "Failed to connect server";
+                        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+
                     }
                 } else {
                     String result = new String(networkResponse.data);
@@ -141,22 +169,42 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(AfterLogin.this, errorMessage, Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
-        }) {
+        })
+        {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("name", "image");
+                params.put("name", "name");
                 return params;
             }
 
+//            @Override
+//            protected Map<String, DataPart> getByteData() {
+//                Map<String, DataPart> params = new HashMap<>();
+//                params.put("video", new DataPart(videoView));
+//                return params;
+//            }
+
+
+
             @Override
-            protected Map<String, DataPart> getByteData() {
+            protected Map<String, DataPart> getByteData() throws IOException {
                 Map<String, DataPart> params = new HashMap<>();
-                params.put("image", new DataPart("image.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), imageView.getDrawable()), "image/jpeg"));
+//                params.put("name", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), R.id.textView)));
+                params.put("video", new DataPart("file_cover.mp4", AppHelper.getFileDataFromDrawable(getBaseContext(), path), "image/jpeg"));
                 return params;
             }
 
         };
         SingletonRequestQueue.getInstance(this).addToRequestQueue(multipartRequest);
+
+
+        multipartRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
     }
+
+
 }
