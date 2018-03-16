@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,7 +24,7 @@ import com.google.gson.JsonParser;
 
 public class MainActivity extends AppCompatActivity {
 
-    String url = "https://api.darksky.net/forecast/YOUR_API_KEY/12.988895,74.80584";
+    String url = "https://api.darksky.net/forecast/462e18cedd3e2f8cc2bbc106164da825/13.0108,74.7943";
     Gson gson;
     RequestQueue queue;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         textView2 = findViewById(R.id.weatherTemperature);
         textView3 = findViewById(R.id.weatherHumidity);
         imageView = findViewById(R.id.weatherIcon);
+        imageView.setImageResource(R.drawable.default_weather);
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -63,12 +65,15 @@ public class MainActivity extends AppCompatActivity {
                         Double Fahrenheit = Double.parseDouble(temperature);
                         Double celcius = (Fahrenheit - 32) * 0.5556;
                         temperature = celcius.toString();
-                        temperature = temperature.substring(0,5);
+                        temperature = temperature.substring(0, 5);
                         Log.i("result", summary);
 //                        summary = '"' + summary + '"';
-                        textView1.setText('"' + summary + '"');
-                        textView3.setText("Temperature - " + temperature);
-                        textView2.setText("Humidity - " + humidity);
+                        String Summary = '"' + summary + '"';
+                        String Temperature = "Temperature - " + temperature;
+                        String Humidity = "Humidity - " + humidity;
+                        textView1.setText(Summary);
+                        textView3.setText(Temperature);
+                        textView2.setText(Humidity);
 //                        Toast.makeText(MainActivity.this, responseFinal, Toast.LENGTH_LONG).show();
 
 
@@ -80,19 +85,25 @@ public class MainActivity extends AppCompatActivity {
 //                        response.setText("That didn't work!");
                 Log.e("tag", error.toString());
                 Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-
+                textView1.setText("SUMMARY");
+                textView3.setText("TEMPERATURE");
+                textView2.setText("HUMIDITY");
+                imageView.setImageResource(R.drawable.default_weather);
             }
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                60000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
-//        setIcon("night-cloud-wind");
+//        setIcon("day-cloudy-drizzle");
 
     }
 
 
     public void setIcon(String iconName) {
-        String weatherIcon = iconName;
         CharSequence weatherType1 = "day";
         CharSequence weatherType2 = "night";
         CharSequence weatherType3 = "sunny";
@@ -107,45 +118,69 @@ public class MainActivity extends AppCompatActivity {
         CharSequence weatherType12 = "wind";
         CharSequence weatherType13 = "hail";
         CharSequence weatherType14 = "thunder";
+        CharSequence weatherType15 = "drizzle";
 
 
-        boolean bool1, bool2, bool3;
-
-
-        if ((weatherIcon.contains(weatherType1)) && (weatherIcon.contains(weatherType3))) {
+        if ((iconName.contains(weatherType1)) && (iconName.contains(weatherType3))) {
             imageView.setImageResource(R.drawable.day_normal);
-        } else if ((weatherIcon.contains(weatherType1)) && (weatherIcon.contains(weatherType10))) {
+        } else if ((iconName.contains(weatherType1)) && (iconName.contains(weatherType10))) {
             imageView.setImageResource(R.drawable.day_sandstorm);
-        } else if ((weatherIcon.contains(weatherType1)) && ((weatherIcon.contains(weatherType7)) || (weatherIcon.contains(weatherType9)) || (weatherIcon.contains(weatherType14)))) {
+        } else if ((iconName.contains(weatherType1)) && ((iconName.contains(weatherType7)) || (iconName.contains(weatherType9)) || (iconName.contains(weatherType14)))) {
             imageView.setImageResource(R.drawable.day_storm);
-        } else if ((weatherIcon.contains(weatherType1)) && ((weatherIcon.contains(weatherType4)) || (weatherIcon.contains(weatherType6)))) {
+        } else if ((iconName.contains(weatherType1)) && ((iconName.contains(weatherType4)) || (iconName.contains(weatherType6)))) {
             imageView.setImageResource(R.drawable.day_rain);
-        } else if ((weatherIcon.contains(weatherType1)) && ((weatherIcon.contains(weatherType8)) || (weatherIcon.contains(weatherType13)))) {
+        } else if ((iconName.contains(weatherType1)) && ((iconName.contains(weatherType8)) || (iconName.contains(weatherType13)))) {
             imageView.setImageResource(R.drawable.snow);
-        } else if ((weatherIcon.contains(weatherType1)) && (weatherIcon.contains(weatherType12))) {
+        } else if ((iconName.contains(weatherType1)) && (iconName.contains(weatherType12))) {
             imageView.setImageResource(R.drawable.day_wind);
-        } else if ((weatherIcon.contains(weatherType1)) && (weatherIcon.contains(weatherType11))) {
+        } else if ((iconName.contains(weatherType1)) && (iconName.contains(weatherType11))) {
             imageView.setImageResource(R.drawable.day_fog);
-        } else if ((weatherIcon.contains(weatherType1)) && (weatherIcon.contains(weatherType5))) {
+        } else if ((iconName.contains(weatherType1)) && (iconName.contains(weatherType5))) {
             imageView.setImageResource(R.drawable.day_cloud);
-        } else if (weatherIcon.contains(weatherType1)) {
+        } else if (iconName.contains(weatherType15)) {
+            imageView.setImageResource(R.drawable.drizzle);
+        } else if (iconName.contains(weatherType1)) {
             imageView.setImageResource(R.drawable.day);
-        } else if ((weatherIcon.contains(weatherType2)) && (weatherIcon.contains(weatherType10))) {
+        } else if ((iconName.contains(weatherType2)) && (iconName.contains(weatherType10))) {
             imageView.setImageResource(R.drawable.night_sandstorm);
-        } else if ((weatherIcon.contains(weatherType2)) && ((weatherIcon.contains(weatherType7)) || (weatherIcon.contains(weatherType9)) || (weatherIcon.contains(weatherType14)))) {
+        } else if ((iconName.contains(weatherType2)) && ((iconName.contains(weatherType7)) || (iconName.contains(weatherType9)) || (iconName.contains(weatherType14)))) {
             imageView.setImageResource(R.drawable.night_storm);
-        } else if ((weatherIcon.contains(weatherType2)) && ((weatherIcon.contains(weatherType4)) || (weatherIcon.contains(weatherType6)))) {
+        } else if ((iconName.contains(weatherType2)) && ((iconName.contains(weatherType4)) || (iconName.contains(weatherType6)))) {
             imageView.setImageResource(R.drawable.night_rain);
-        } else if ((weatherIcon.contains(weatherType2)) && ((weatherIcon.contains(weatherType8)) || (weatherIcon.contains(weatherType13)))) {
-            imageView.setImageResource(R.drawable.snow);
-        } else if ((weatherIcon.contains(weatherType2)) &&  (weatherIcon.contains(weatherType12))) {
+        } else if ((iconName.contains(weatherType2)) && (iconName.contains(weatherType12))) {
             imageView.setImageResource(R.drawable.night_wind);
-        } else if ((weatherIcon.contains(weatherType2)) && (weatherIcon.contains(weatherType11))) {
+        } else if ((iconName.contains(weatherType2)) && (iconName.contains(weatherType11))) {
             imageView.setImageResource(R.drawable.night_fog);
-        } else if ((weatherIcon.contains(weatherType2)) && (weatherIcon.contains(weatherType5))) {
+        } else if ((iconName.contains(weatherType2)) && (iconName.contains(weatherType5))) {
             imageView.setImageResource(R.drawable.night_cloud);
-        } else if (weatherIcon.contains(weatherType2)) {
+        } else if (iconName.contains(weatherType2)) {
             imageView.setImageResource(R.drawable.night);
+        } else if (iconName.contains(weatherType3)) {
+            imageView.setImageResource(R.drawable.day);
+        } else if (iconName.contains(weatherType4)) {
+            imageView.setImageResource(R.drawable.rain);
+        } else if (iconName.contains(weatherType5)) {
+            imageView.setImageResource(R.drawable.cloud);
+        } else if (iconName.contains(weatherType6)) {
+            imageView.setImageResource(R.drawable.rain);
+        } else if (iconName.contains(weatherType7)) {
+            imageView.setImageResource(R.drawable.day_storm);
+        } else if (iconName.contains(weatherType8)) {
+            imageView.setImageResource(R.drawable.snow);
+        } else if (iconName.contains(weatherType9)) {
+            imageView.setImageResource(R.drawable.day_storm);
+        } else if (iconName.contains(weatherType10)) {
+            imageView.setImageResource(R.drawable.sandstorm);
+        } else if (iconName.contains(weatherType11)) {
+            imageView.setImageResource(R.drawable.fog);
+        } else if (iconName.contains(weatherType12)) {
+            imageView.setImageResource(R.drawable.wind);
+        } else if (iconName.contains(weatherType13)) {
+            imageView.setImageResource(R.drawable.hail);
+        } else if (iconName.contains(weatherType14)) {
+            imageView.setImageResource(R.drawable.day_storm);
+        } else if (iconName.contains(weatherType15)) {
+            imageView.setImageResource(R.drawable.drizzle);
         } else {
             imageView.setImageResource(R.drawable.default_weather);
         }
