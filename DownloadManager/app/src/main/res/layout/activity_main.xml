@@ -7,46 +7,24 @@
     android:orientation="vertical"
     tools:context="com.example.nishant.downloadmanager.MainActivity">
 
-    <Button
-        android:id="@+id/startDownload"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/single"
+        android:textSize="20sp"
+        android:padding="20dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Downloading my File" />
+        android:text="Download single file" />
 
-    <Button
-        android:id="@+id/displayDownload"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_below="@+id/multiple"
+        android:id="@+id/multiple"
+        android:textSize="20sp"
+        android:layout_marginTop="50dp"
+        android:padding="20dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Display all Downloads" />
-
-    <Button
-        android:id="@+id/checkStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Check Status of Download" />
-
-    <Button
-        android:id="@+id/cancelDownload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel the current Download" />
-
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/countryData"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        </LinearLayout>
-    </ScrollView>
+        android:text="Download multiple files" />
 
 </LinearLayout>
