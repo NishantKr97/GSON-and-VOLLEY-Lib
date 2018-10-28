@@ -86,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MESSAGE_READ:
                     byte[] readBuff = (byte[]) msg.obj;
-                    String tempMsg = new String(readBuff, 0, msg.arg1);
-
+                    String tempMsg = new String(readBuff, 1, msg.arg1);
+                    String s = new String(readBuff);
 
                     String str = new String(readBuff, StandardCharsets.UTF_8);
-                    Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
 
-                    read_msg_box.setText(tempMsg+"fdj");
+                    read_msg_box.setText(readBuff + s + tempMsg+"hi");
                     break;
             }
             return true;
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (wifiP2pInfo.groupFormed && wifiP2pInfo.isGroupOwner) {
                 connectionStatus.setText("Host");
-
+//                connectionStatus.setBackgroundColor();
                 serverClass = new ServerClass();
                 serverClass.start();
             } else if (wifiP2pInfo.groupFormed) {
